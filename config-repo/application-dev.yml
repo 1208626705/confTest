@@ -1,0 +1,62 @@
+  servlet:
+    multipart:
+      max-file-size: 2048MB
+      enabled: true
+      max-request-size: 2048MB
+  cloud:
+    nacos:
+      discovery:
+        service: ${spring.application.name}
+        ip: ${nacos.url}
+        port: ${server.port}
+        server-addr: ${nacos.url}:8848
+  redis:
+    database: 0
+    host: ${redis.url}
+    port: 6379
+    jedis:
+      pool:
+        min-idle: 8
+        max-idle: 500
+        max-active: 2000
+        max-wait: 10000
+    timeout: 5000
+  boot:
+    admin:
+      client:
+        url: http://${ecm_monitor.url}:15001
+        username: lvanecm
+        password: Lvan123456~
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: ALWAYS
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 100000 #单位毫秒
+        readTimeout: 250000 #单位毫秒
+  hystrix:
+    enabled: false
+
+hystrix:
+  shareSecurityContext: true
+
+security:
+  oauth2:
+    resource:
+      id: ${spring.application.name}
+      user-info-uri: http://${auth.url}:12001/lvanitech/api/auth/user
+
+
+mybatis-plus:
+  mapper-locations: mybatis/*-mapper.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
